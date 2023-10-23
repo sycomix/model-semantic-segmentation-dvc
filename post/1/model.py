@@ -16,7 +16,7 @@ def rle_encode(im_arr):
     height, width = im_arr.shape
     flat = im_arr.T.flatten()
     switches = np.nonzero(np.append(flat, 0) != np.append(0, flat))[0]
-    rle_arr = (np.append(switches, switches[-1]) - np.append(0, switches))[0:-1]
+    rle_arr = (np.append(switches, switches[-1]) - np.append(0, switches))[:-1]
     remaining = width * height - np.sum(rle_arr)
     if remaining > 0:
         rle_arr = np.append(rle_arr, remaining)
@@ -127,11 +127,11 @@ class TritonPythonModel(object):
                 rs_rles.append(image_rles)
                 rs_categories.append(image_categories)
 
-            max_categories = max([len(i) for i in rs_categories])
+            max_categories = max(len(i) for i in rs_categories)
             for ctg in rs_categories:
                 for _ in range(max_categories - len(ctg)):
                     ctg.append("")
-            max_rles = max([len(i) for i in rs_rles])
+            max_rles = max(len(i) for i in rs_rles)
             for rles in rs_rles:
                 for _ in range(max_rles - len(rles)):
                     rles.append("")
